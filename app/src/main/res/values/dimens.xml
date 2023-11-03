@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="logo_margin">56dp</dimen>
+    <dimen name="log_in_margin">32dp</dimen>
+    <dimen name="login_fields_margin">24dp</dimen>
+    <dimen name="between_label_input_margin">8dp</dimen>
+</resources>

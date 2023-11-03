@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">TestTask</string>
+    <string name="log_in_account">Вход в аккаунт</string>
+    <string name="login">Войти</string>
+    <string name="phone">Телефон</string>
+    <string name="password">Пароль</string>
+    <string name="enter_passwd">Введите пароль</string>
+    <string name="news_feed">Лента новостей</string>
+    <string name="default_filter">По умолчанию</string>
+    <string name="date_filter">По дате</string>
+    <string name="date_example">05 декабря, 19:40</string>
+    <string name="title_example">Отчёт Лаборатории реактивного движения (JPL)</string>
+    <string name="description_example">В отчёте по исследованию космического аппарата «Новые
+        Горизонты» (New Horizons), запущенном NASA в январе 2006 года. На борту аппарата находится
+        телескоп имени Хаббла, который будет исследовать Плутон и его спутники. В отчёте говорится,
+        что за время полёта аппарата на орбите Плутона была обнаружена атмосфера с высоким
+        содержанием метана и азотного ангидрида. Это открытие подтверждает гипотезу, согласно
+        которой на Плутоне есть лёд, но не объясняет, каким образом он там оказался.</string>
+</resources>
