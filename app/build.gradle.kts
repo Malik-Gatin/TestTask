@@ -50,10 +50,10 @@ dependencies {
     implementation("com.google.android.material:material:1.10.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")
     implementation("androidx.activity:activity-ktx:1.8.0")
-    implementation("androidx.fragment:fragment-ktx:1.6.1")
+    implementation("androidx.fragment:fragment-ktx:1.6.2")
 
-    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
-    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.5")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.5")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.2")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
@@ -62,6 +62,21 @@ dependencies {
     // Hilt
     implementation("com.google.dagger:hilt-android:2.48.1")
     kapt("com.google.dagger:hilt-compiler:2.48.1")
+
+    // Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    // Kotlin serialization Converter
+    implementation("com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
+
+    // OkHttp
+    // define a BOM and its version
+    implementation(platform("com.squareup.okhttp3:okhttp-bom:4.11.0"))
+
+    // define any required OkHttp artifacts without version
+    implementation("com.squareup.okhttp3:okhttp")
+    implementation("com.squareup.okhttp3:logging-interceptor")
 
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
