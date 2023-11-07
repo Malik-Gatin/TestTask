@@ -2,20 +2,21 @@ package com.didjeridu_dev.testtask.utils
 
 class MaskUtils {
     companion object {
-        fun applyMask(input: String, mask: String): String {
-            if (input.length > mask.length) {
-                return input.substring(0, mask.length)
-            }
-            val result = StringBuilder()
-            for (i in input.indices) {
-                val maskChar = mask[i]
-                if (maskChar == 'Х') {
-                    result.append(input[i])
-                } else{
-                    result.append(maskChar)
+        fun applyMask(text: String, mask: String, firstXIndex:Int): String {
+            val filteredText = if(text.length > firstXIndex) text.filterIndexed { index, c -> index > firstXIndex && c.isDigit() } else text
+            val formattedText = buildString {
+                var index = 0
+                for (i in mask.indices) {
+                    if (index >= filteredText.length) break
+                    if (mask[i] == 'Х') {
+                        append(filteredText[index])
+                        index++
+                    } else {
+                        append(mask[i])
+                    }
                 }
             }
-            return result.toString()
+            return formattedText
         }
     }
 }

@@ -30,13 +30,15 @@ class LoginFragment:Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        var phoneMask: String = ""
+        var phoneMask = ""
+        var firstXIndex = -1
         val editTextPhone = binding.etPhone
 
         loginViewModel.phoneMask.observe(viewLifecycleOwner) {maskContainer->
             maskContainer?.let {
                 phoneMask = it.phoneMask
                 editTextPhone.hint = phoneMask
+                firstXIndex = phoneMask.indexOf('Х') - 1
             }
         }
 
@@ -44,10 +46,14 @@ class LoginFragment:Fragment() {
             override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
             override fun afterTextChanged(p0: Editable?) {
-                val formattedText = applyMask(p0.toString(), phoneMask)
-                if (p0.toString() != formattedText) {
-                    editTextPhone.setText(formattedText)
-                    editTextPhone.setSelection(formattedText.length)
+                p0?.let {
+                    val text = p0.toString()
+                    val formattedText = applyMask(text, phoneMask, firstXIndex)
+
+                    if (text != formattedText) {
+                        editTextPhone.setText(formattedText)
+                        editTextPhone.setSelection(formattedText.length)
+                    }
                 }
             }
         })
