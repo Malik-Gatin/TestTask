@@ -1,9 +1,12 @@
 package com.didjeridu_dev.testtask.di
 
 import android.util.Log
-import com.didjeridu_dev.testtask.data.NetworkPhoneMaskRepository
-import com.didjeridu_dev.testtask.data.PhoneMaskRepository
+import com.didjeridu_dev.testtask.data.AuthenticationRepositoryImpl
+import com.didjeridu_dev.testtask.data.PhoneMaskRepositoryImpl
+import com.didjeridu_dev.testtask.data.network.AuthenticationApiService
 import com.didjeridu_dev.testtask.data.network.PhoneMaskApiService
+import com.didjeridu_dev.testtask.domain.repository.AuthenticationRepository
+import com.didjeridu_dev.testtask.domain.repository.PhoneMaskRepository
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -48,7 +51,17 @@ class NetworkModule {
 
     @Provides
     fun providePhoneMaskRepository(phoneMaskApiService: PhoneMaskApiService): PhoneMaskRepository {
-        return NetworkPhoneMaskRepository(phoneMaskApiService)
+        return PhoneMaskRepositoryImpl(phoneMaskApiService)
+    }
+
+    @Provides
+    fun provideAuthenticationService(retrofit: Retrofit):AuthenticationApiService{
+        return retrofit.create(AuthenticationApiService::class.java)
+    }
+
+    @Provides
+    fun provideAuthenticationRepository(authenticationApiService: AuthenticationApiService):AuthenticationRepository{
+        return AuthenticationRepositoryImpl(authenticationApiService)
     }
 
 }

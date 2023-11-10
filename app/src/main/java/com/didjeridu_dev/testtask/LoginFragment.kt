@@ -6,10 +6,13 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import com.didjeridu_dev.testtask.data.network.models.Login
 import com.didjeridu_dev.testtask.databinding.FragmentLoginBinding
 import com.didjeridu_dev.testtask.utils.MaskUtils.Companion.applyMask
+import com.didjeridu_dev.testtask.utils.MaskUtils.Companion.fromMaskToRequest
 import com.didjeridu_dev.testtask.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -29,10 +32,13 @@ class LoginFragment:Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val editTextPhone = binding.etPhone
+        val editTextPasswd = binding.etPassword
+
         super.onViewCreated(view, savedInstanceState)
         var phoneMask = ""
         var firstXIndex = -1
-        val editTextPhone = binding.etPhone
+
 
         loginViewModel.phoneMask.observe(viewLifecycleOwner) {maskContainer->
             maskContainer?.let {
@@ -57,5 +63,22 @@ class LoginFragment:Fragment() {
                 }
             }
         })
+
+        binding.bLogin.setOnClickListener{
+            val phone = fromMaskToRequest(editTextPhone.text.toString())
+            val password = editTextPasswd.text.toString()
+            auth(
+                Login(phone = phone, password = password)
+            )
+        }
+    }
+
+    private fun auth(loginData: Login){
+        loginViewModel.auth(loginData)
+        loginViewModel.responseAuth.observe(viewLifecycleOwner) {authContainer->
+            authContainer?.let {
+                Toast.makeText(this@LoginFragment.context, it.isSuccess.toString(), Toast.LENGTH_LONG).show()
+            }
+        }
     }
 }

@@ -1,4 +1,4 @@
-package com.didjeridu_dev.testtask.data.network
+package com.didjeridu_dev.testtask.data.network.models
 
 import kotlinx.serialization.Serializable
 
