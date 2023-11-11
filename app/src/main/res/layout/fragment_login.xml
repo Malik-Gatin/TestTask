@@ -104,43 +104,56 @@
         android:id="@+id/password_block"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/between_label_input_margin"
-        android:padding="10dp"
-
+        android:layout_marginTop="12dp"
         android:background="@drawable/rounded_corner_transparent"
 
-        app:layout_constraintTop_toBottomOf="@+id/tv_password"
+        android:padding="10dp"
+
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/tv_password">
 
 
         <androidx.appcompat.widget.AppCompatEditText
             android:id="@+id/et_password"
+            style="@style/NoUnderlineEditTextStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
 
+            android:layout_marginEnd="16dp"
             android:hint="@string/enter_passwd"
             android:inputType="textPassword"
-            style="@style/NoUnderlineEditTextStyle"
 
-            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/b_view_passwd"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageButton
             android:id="@+id/b_view_passwd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
 
-            android:src="@drawable/ic_eye_open_gray"
             android:background="@null"
+            android:src="@drawable/ic_eye_open_gray"
 
+            app:layout_constraintBottom_toBottomOf="@+id/et_password"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/et_password"
-            app:layout_constraintBottom_toBottomOf="@+id/et_password"/>
+            app:layout_constraintTop_toTopOf="@+id/et_password" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_errorPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+
+        android:text="@string/wrong_passwd"
+        android:textColor="@color/red"
+
+        app:layout_constraintTop_toBottomOf="@+id/password_block"
+        app:layout_constraintStart_toStartOf="parent"
+        android:visibility="invisible"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/b_login"

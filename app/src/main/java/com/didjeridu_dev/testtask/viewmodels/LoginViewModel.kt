@@ -25,12 +25,23 @@ class LoginViewModel @Inject constructor(
     private val _phoneMask = MutableLiveData<PhoneMask>()
     private val _status = MutableLiveData<AuthApiStatus>()
     private val _responseAuth = MutableLiveData<Authentication>()
+    private val _isEnableButton = MutableLiveData<Boolean>(false)
+    private val _isHidePassword = MutableLiveData<Boolean>(false)
+    private val _phone = MutableLiveData<String>("")
+    private val _password = MutableLiveData<String>("")
+
     val phoneMask: LiveData<PhoneMask>
         get() = _phoneMask
     val status:LiveData<AuthApiStatus>
         get() = _status
-    val responseAuth: LiveData<Authentication>
-        get() = _responseAuth
+    val isEnableButton: LiveData<Boolean>
+        get() = _isEnableButton
+    val phone:LiveData<String>
+        get() = _phone
+    val password:LiveData<String>
+        get() = _password
+    val isHidePassword:LiveData<Boolean>
+        get() = _isHidePassword
 
     init{
         getPhoneMask()
@@ -69,5 +80,21 @@ class LoginViewModel @Inject constructor(
             .add("phone", loginData.phone)
             .add("password", loginData.password)
             .build()
+    }
+
+    fun setPhone(phone:String){
+        _phone.value = phone
+        setEnabled()
+    }
+    fun setPassword(password:String){
+        _password.value = password
+        setEnabled()
+    }
+    fun changeVisiblePassword(){
+        _isHidePassword.value = _isHidePassword.value?.not()
+    }
+    private fun setEnabled() {
+        _isEnableButton.value = _phone.value != "" && _password.value != "" &&
+                _phone.value?.length == _phoneMask.value?.phoneMask?.length
     }
 }

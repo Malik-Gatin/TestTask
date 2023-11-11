@@ -5,6 +5,7 @@
     <string name="phone">Телефон</string>
     <string name="password">Пароль</string>
     <string name="enter_passwd">Введите пароль</string>
+    <string name="wrong_passwd">Неверный пароль</string>
     <string name="news_feed">Лента новостей</string>
     <string name="default_filter">По умолчанию</string>
     <string name="date_filter">По дате</string>

@@ -9,4 +9,6 @@
     <color name="gray_dark_text">#2D3748</color>
     <color name="gray_light">#DDDDDD</color>
     <color name="gray_extralight">#F4F4F4</color>
+    <color name="red">#FF000C</color>
+    <color name="red_light">#F4586C</color>
 </resources>
