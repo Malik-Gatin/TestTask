@@ -1,9 +1,11 @@
 package com.didjeridu_dev.testtask.di
 
 import android.util.Log
+import com.didjeridu_dev.testtask.App.AppConstants.BASE_API_URL
 import com.didjeridu_dev.testtask.data.AuthenticationRepositoryImpl
 import com.didjeridu_dev.testtask.data.PhoneMaskRepositoryImpl
 import com.didjeridu_dev.testtask.data.PostsRepositoryImpl
+import com.didjeridu_dev.testtask.data.local.SharedPreferencesManager
 import com.didjeridu_dev.testtask.data.network.AuthenticationApiService
 import com.didjeridu_dev.testtask.data.network.PhoneMaskApiService
 import com.didjeridu_dev.testtask.data.network.PostsApiService
@@ -18,8 +20,6 @@ import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import javax.inject.Singleton
 import retrofit2.converter.gson.GsonConverterFactory
-
-private const val BASE_URL = "http://dev-exam.l-tech.ru/api/v1/"
 
 @Module
 @InstallIn(SingletonComponent::class)
@@ -42,7 +42,7 @@ class NetworkModule {
         return Retrofit.Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(client)
-            .baseUrl(BASE_URL)
+            .baseUrl(BASE_API_URL)
             .build()
     }
 
@@ -53,16 +53,19 @@ class NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun providePhoneMaskRepository(phoneMaskApiService: PhoneMaskApiService): PhoneMaskRepository {
         return PhoneMaskRepositoryImpl(phoneMaskApiService)
     }
 
     @Provides
+    @Singleton
     fun provideAuthenticationService(retrofit: Retrofit):AuthenticationApiService{
         return retrofit.create(AuthenticationApiService::class.java)
     }
 
     @Provides
+    @Singleton
     fun provideAuthenticationRepository(
         authenticationApiService: AuthenticationApiService
     ):AuthenticationRepository{
@@ -70,13 +73,17 @@ class NetworkModule {
     }
 
     @Provides
+    @Singleton
     fun providePostsApiService(retrofit: Retrofit):PostsApiService{
         return retrofit.create(PostsApiService::class.java)
     }
 
     @Provides
-    fun providePostsRepositoryImpl(postsApiService: PostsApiService): PostsRepository {
-        return PostsRepositoryImpl(postsApiService)
+    @Singleton
+    fun providePostsRepositoryImpl(
+        postsApiService: PostsApiService,
+        sharedPreferencesManager: SharedPreferencesManager
+    ): PostsRepository {
+        return PostsRepositoryImpl(postsApiService, sharedPreferencesManager)
     }
-
 }

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.didjeridu_dev.testtask.databinding.FragmentHomeBinding
+import com.didjeridu_dev.testtask.presentation.adapters.PostAdapter
 import com.didjeridu_dev.testtask.presentation.viewmodels.HomeViewModel
 import com.didjeridu_dev.testtask.presentation.viewmodels.PostsApiStatus
 import dagger.hilt.android.AndroidEntryPoint
@@ -28,6 +29,10 @@ class HomeFragment: Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val adapter = PostAdapter()
+        binding.recyclerViewArticles.adapter = adapter
+
         binding.bRefresh.setOnClickListener{
             homeViewModel.getPosts()
         }
@@ -45,6 +50,12 @@ class HomeFragment: Fragment() {
                         binding.bRefresh.isEnabled = true
                     }
                 }
+            }
+        }
+
+        homeViewModel.posts.observe(viewLifecycleOwner){posts->
+            posts?.let{
+                adapter.submitList(posts)
             }
         }
     }

@@ -32,11 +32,14 @@ class HomeViewModel @Inject constructor(
             _status.value = PostsApiStatus.LOADING
             try{
                 _posts.value = postsRepository.getPosts()
+                _posts.value?.let{postsRepository.savePosts(it)}
                 _status.value = PostsApiStatus.DONE
             } catch (e: Exception){
                 _status.value = PostsApiStatus.ERROR
-                _posts.value = listOf()
+                _posts.value = postsRepository.getPosts()
             }
         }
     }
+
+
 }
