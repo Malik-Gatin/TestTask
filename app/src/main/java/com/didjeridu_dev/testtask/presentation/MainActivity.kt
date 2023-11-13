@@ -1,7 +1,8 @@
-package com.didjeridu_dev.testtask
+package com.didjeridu_dev.testtask.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.didjeridu_dev.testtask.R
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

@@ -1,4 +1,4 @@
-package com.didjeridu_dev.testtask
+package com.didjeridu_dev.testtask.presentation
 
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
@@ -14,18 +14,19 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.didjeridu_dev.testtask.R
 import com.didjeridu_dev.testtask.data.network.models.Login
 import com.didjeridu_dev.testtask.databinding.FragmentLoginBinding
 import com.didjeridu_dev.testtask.utils.MaskUtils.Companion.applyMask
 import com.didjeridu_dev.testtask.utils.MaskUtils.Companion.fromMaskToRequest
-import com.didjeridu_dev.testtask.viewmodels.AuthApiStatus
-import com.didjeridu_dev.testtask.viewmodels.LoginViewModel
+import com.didjeridu_dev.testtask.presentation.viewmodels.AuthApiStatus
+import com.didjeridu_dev.testtask.presentation.viewmodels.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class LoginFragment:Fragment() {
 
-    private val loginViewModel:LoginViewModel by viewModels()
+    private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
 
     override fun onCreateView(
@@ -109,18 +110,22 @@ class LoginFragment:Fragment() {
             }
         }
 
-        loginViewModel.status.observe(viewLifecycleOwner){
-            when(it){
-                AuthApiStatus.DONE -> {
-                    findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
-                }
-                AuthApiStatus.LOADING -> {
-                    enableButtonSwitcher(false)
-                    switchShowErrorAuth(false)
-                }
-                AuthApiStatus.ERROR -> {
-                    enableButtonSwitcher(true)
-                    switchShowErrorAuth(true)
+        loginViewModel.status.observe(viewLifecycleOwner){authStatus->
+            authStatus?.let {
+                when (it) {
+                    AuthApiStatus.DONE -> {
+                        findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
+                    }
+
+                    AuthApiStatus.LOADING -> {
+                        loginViewModel.setEnabled(false)
+                        switchShowErrorAuth(false)
+                    }
+
+                    AuthApiStatus.ERROR -> {
+                        loginViewModel.setEnabled(true)
+                        switchShowErrorAuth(true)
+                    }
                 }
             }
         }

@@ -6,11 +6,11 @@
 
     <fragment
         android:id="@+id/articleDetailsFragment"
-        android:name="com.didjeridu_dev.testtask.ArticleDetailsFragment"
+        android:name="com.didjeridu_dev.testtask.presentation.ArticleDetailsFragment"
         android:label="ArticleDetailsFragment" />
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.didjeridu_dev.testtask.HomeFragment"
+        android:name="com.didjeridu_dev.testtask.presentation.HomeFragment"
         android:label="HomeFragment" >
         <action
             android:id="@+id/action_homeFragment_to_articleDetailsFragment"
@@ -18,7 +18,7 @@
     </fragment>
     <fragment
         android:id="@+id/loginFragment"
-        android:name="com.didjeridu_dev.testtask.LoginFragment"
+        android:name="com.didjeridu_dev.testtask.presentation.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_homeFragment"

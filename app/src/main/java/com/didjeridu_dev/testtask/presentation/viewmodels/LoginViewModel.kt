@@ -1,4 +1,4 @@
-package com.didjeridu_dev.testtask.viewmodels
+package com.didjeridu_dev.testtask.presentation.viewmodels
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -93,8 +93,19 @@ class LoginViewModel @Inject constructor(
     fun changeVisiblePassword(){
         _isHidePassword.value = _isHidePassword.value?.not()
     }
-    private fun setEnabled() {
-        _isEnableButton.value = _phone.value != "" && _password.value != "" &&
-                _phone.value?.length == _phoneMask.value?.phoneMask?.length
+
+    fun setEnabled(isEnable:Boolean? = null) {
+        when (isEnable) {
+            true -> {
+                _isEnableButton.value = true
+            }
+            false -> {
+                _isEnableButton.value = false
+            }
+            else -> {
+                _isEnableButton.value = _phone.value != "" && _password.value != "" &&
+                        _phone.value?.length == _phoneMask.value?.phoneMask?.length
+            }
+        }
     }
 }
