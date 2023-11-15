@@ -11,5 +11,7 @@ class App:Application(){
         const val POSTS = "posts"
 
         const val DEFAULT_MASK = "+7 (ХХХ) ХХХ-ХХ-ХХ"
+        // частота обновления данных с сервера: каждые n мс
+        const val UPDATE_FREQUENCY = 3600000L
     }
 }

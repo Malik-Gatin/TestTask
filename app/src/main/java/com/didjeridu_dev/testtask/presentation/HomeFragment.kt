@@ -36,7 +36,7 @@ class HomeFragment: Fragment() {
         binding.recyclerViewArticles.adapter = adapter
 
         binding.bRefresh.setOnClickListener{
-            homeViewModel.getPosts()
+            homeViewModel.getPostsFromServer()
         }
 
         binding.filterMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{

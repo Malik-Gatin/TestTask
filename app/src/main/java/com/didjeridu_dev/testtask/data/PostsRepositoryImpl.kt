@@ -4,6 +4,7 @@ import com.didjeridu_dev.testtask.App.AppConstants.POSTS
 import com.didjeridu_dev.testtask.data.local.SharedPreferencesManager
 import com.didjeridu_dev.testtask.data.network.PostsApiService
 import com.didjeridu_dev.testtask.data.network.models.Post
+import com.didjeridu_dev.testtask.domain.models.LocalPostData
 import com.didjeridu_dev.testtask.domain.repository.PostsRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -16,16 +17,16 @@ class PostsRepositoryImpl @Inject constructor(
     override suspend fun getPosts(): List<Post> {
         return postsApiService.getPosts()
     }
-    override suspend fun getPostsFromLocalFile(): List<Post> {
+    override suspend fun getPostsFromLocalFile(): LocalPostData? {
         val jsonPosts = sharedPreferencesManager.getData(POSTS)
         return if(jsonPosts != null){
-            Gson().fromJson(jsonPosts, object : TypeToken<List<Post>>() {}.type)
+            Gson().fromJson(jsonPosts, object : TypeToken<LocalPostData>() {}.type)
         }else {
-            listOf()
+            null
         }
     }
-    override suspend fun savePosts(posts: List<Post>) {
-        val jsonPosts = Gson().toJson(posts)
+    override suspend fun savePosts(localPostData: LocalPostData) {
+        val jsonPosts = Gson().toJson(localPostData)
         sharedPreferencesManager.saveData(POSTS, jsonPosts)
     }
 }
