@@ -9,5 +9,7 @@ class App:Application(){
         const val BASE_URL = "http://dev-exam.l-tech.ru"
         const val BASE_API_URL = "$BASE_URL/api/v1/"
         const val POSTS = "posts"
+
+        const val DEFAULT_MASK = "+7 (ХХХ) ХХХ-ХХ-ХХ"
     }
 }

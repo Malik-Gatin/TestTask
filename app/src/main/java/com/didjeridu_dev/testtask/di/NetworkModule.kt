@@ -54,7 +54,9 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun providePhoneMaskRepository(phoneMaskApiService: PhoneMaskApiService): PhoneMaskRepository {
+    fun providePhoneMaskRepository(
+        phoneMaskApiService: PhoneMaskApiService
+    ): PhoneMaskRepository {
         return PhoneMaskRepositoryImpl(phoneMaskApiService)
     }
 
@@ -67,9 +69,10 @@ class NetworkModule {
     @Provides
     @Singleton
     fun provideAuthenticationRepository(
-        authenticationApiService: AuthenticationApiService
+        authenticationApiService: AuthenticationApiService,
+        sharedPreferencesManager: SharedPreferencesManager
     ):AuthenticationRepository{
-        return AuthenticationRepositoryImpl(authenticationApiService)
+        return AuthenticationRepositoryImpl(authenticationApiService, sharedPreferencesManager)
     }
 
     @Provides

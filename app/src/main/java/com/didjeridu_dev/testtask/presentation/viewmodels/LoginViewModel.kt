@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.didjeridu_dev.testtask.App.AppConstants.DEFAULT_MASK
 import com.didjeridu_dev.testtask.data.network.models.Authentication
 import com.didjeridu_dev.testtask.data.network.models.Login
 import com.didjeridu_dev.testtask.data.network.models.PhoneMask
@@ -22,13 +23,13 @@ class LoginViewModel @Inject constructor(
     private val phoneMaskRepository: PhoneMaskRepository,
     private val authenticationRepository: AuthenticationRepository
 ):ViewModel() {
-    private val _phoneMask = MutableLiveData<PhoneMask>()
+    private val _phoneMask = MutableLiveData<PhoneMask>(PhoneMask(DEFAULT_MASK))
     private val _status = MutableLiveData<AuthApiStatus>()
     private val _responseAuth = MutableLiveData<Authentication>()
     private val _isEnableButton = MutableLiveData<Boolean>(false)
     private val _isHidePassword = MutableLiveData<Boolean>(false)
-    private val _phone = MutableLiveData<String>("")
-    private val _password = MutableLiveData<String>("")
+    private val _phone = MutableLiveData<String>()
+    private val _password = MutableLiveData<String>()
 
     val phoneMask: LiveData<PhoneMask>
         get() = _phoneMask
@@ -48,7 +49,16 @@ class LoginViewModel @Inject constructor(
     }
     private fun getPhoneMask(){
         viewModelScope.launch {
-            _phoneMask.value = phoneMaskRepository.getPhoneMask()
+            try{
+                _phoneMask.value = phoneMaskRepository.getPhoneMask()
+            }catch(e:Exception){
+                e.printStackTrace()
+            }
+            _phoneMask.value?.let {
+                val loginData = authenticationRepository.getLoginDataFromLocalFile(it.phoneMask)
+                _phone.value = loginData?.phone
+                _password.value = loginData?.password
+            }
         }
     }
 
@@ -61,6 +71,11 @@ class LoginViewModel @Inject constructor(
                 when (response.raw().code){
                     200 -> {
                         _responseAuth.value = response.body()
+                        _phoneMask.value?.let{phoneMask->
+                            authenticationRepository.savePhoneAndPassword(phoneMask.phoneMask,
+                                Login(_phone.value!!, _password.value!!)
+                            )
+                        }
                         _status.value = AuthApiStatus.DONE
                     }
                     else -> {
@@ -97,14 +112,16 @@ class LoginViewModel @Inject constructor(
     fun setEnabled(isEnable:Boolean? = null) {
         when (isEnable) {
             true -> {
-                _isEnableButton.value = true
+                if(!_phone.value.isNullOrEmpty() && !_password.value.isNullOrEmpty())
+                    _isEnableButton.value = true
             }
             false -> {
                 _isEnableButton.value = false
             }
             else -> {
-                _isEnableButton.value = _phone.value != "" && _password.value != "" &&
-                        _phone.value?.length == _phoneMask.value?.phoneMask?.length
+                _isEnableButton.value =
+                    !_phone.value.isNullOrEmpty() && !_password.value.isNullOrEmpty()
+                            && _phone.value?.length == _phoneMask.value?.phoneMask?.length
             }
         }
     }
