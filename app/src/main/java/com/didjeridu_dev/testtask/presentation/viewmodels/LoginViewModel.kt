@@ -44,6 +44,8 @@ class LoginViewModel @Inject constructor(
     val isHidePassword:LiveData<Boolean>
         get() = _isHidePassword
 
+    var isConnectedError: Boolean = false
+
     init{
         getPhoneMask()
     }
@@ -85,13 +87,15 @@ class LoginViewModel @Inject constructor(
                 }
             }catch (e: Exception) {
                 _responseAuth.value = Authentication(isSuccess = false)
-                _status.value = AuthApiStatus.ERROR
+                isConnectedError = true
+                _status.value = AuthApiStatus.DEFAULT
             }
         }
     }
 
     fun resetStatus(){
         _status.value = AuthApiStatus.DEFAULT
+        isConnectedError = false
     }
 
     private fun createFormBody(loginData: Login): RequestBody {
