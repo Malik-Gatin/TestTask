@@ -1,8 +1,8 @@
-package com.didjeridu_dev.testtask.data
+package com.didjeridu_dev.testtask.data.network.repository
 
 import com.didjeridu_dev.testtask.App.AppConstants.POSTS
 import com.didjeridu_dev.testtask.data.local.SharedPreferencesManager
-import com.didjeridu_dev.testtask.data.network.PostsApiService
+import com.didjeridu_dev.testtask.data.network.api.PostsApiService
 import com.didjeridu_dev.testtask.data.network.models.Post
 import com.didjeridu_dev.testtask.domain.models.LocalPostData
 import com.didjeridu_dev.testtask.domain.repository.PostsRepository

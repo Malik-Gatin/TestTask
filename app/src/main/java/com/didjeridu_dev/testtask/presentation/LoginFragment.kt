@@ -4,7 +4,6 @@ import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.LayoutInflater
 import android.view.View
@@ -101,10 +100,14 @@ class LoginFragment:Fragment() {
 
         loginViewModel.isHidePassword.observe(viewLifecycleOwner){isHide ->
             isHide.let {
-                if(isHide)
-                    binding.etPassword.transformationMethod = HideReturnsTransformationMethod.getInstance()
-                else
+                if(isHide){
                     binding.etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    binding.bViewPasswd.setImageResource(R.drawable.ic_eye_close_gray)
+                }
+                else{
+                    binding.etPassword.transformationMethod = null
+                    binding.bViewPasswd.setImageResource(R.drawable.ic_eye_open_gray)
+                }
             }
         }
 
@@ -126,9 +129,9 @@ class LoginFragment:Fragment() {
             authStatus?.let {
                 when (it) {
                     AuthApiStatus.DONE -> {
+                        loginViewModel.resetStatus()
                         findNavController().navigate(R.id.action_loginFragment_to_homeFragment)
                     }
-
                     AuthApiStatus.LOADING -> {
                         loginViewModel.setEnabled(false)
                         switchShowErrorAuth(false)
@@ -137,6 +140,10 @@ class LoginFragment:Fragment() {
                     AuthApiStatus.ERROR -> {
                         loginViewModel.setEnabled(true)
                         switchShowErrorAuth(true)
+                    }
+                    AuthApiStatus.DEFAULT ->{
+                        loginViewModel.setEnabled(true)
+                        switchShowErrorAuth(false)
                     }
                 }
             }

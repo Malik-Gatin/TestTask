@@ -4,7 +4,9 @@
     <dimen name="log_in_margin">32dp</dimen>
     <dimen name="login_fields_margin">24dp</dimen>
     <dimen name="between_label_input_margin">8dp</dimen>
+    <dimen name="elevation_toolbar">8dp</dimen>
     <dimen name="radius_16">16dp</dimen>
+    <dimen name="default_dimen_16">16dp</dimen>
     <dimen name="radius_14">14dp</dimen>
     <dimen name="border_width">1.5dp</dimen>
 </resources>

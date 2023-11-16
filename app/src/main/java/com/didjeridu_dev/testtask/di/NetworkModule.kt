@@ -2,13 +2,13 @@ package com.didjeridu_dev.testtask.di
 
 import android.util.Log
 import com.didjeridu_dev.testtask.App.AppConstants.BASE_API_URL
-import com.didjeridu_dev.testtask.data.AuthenticationRepositoryImpl
-import com.didjeridu_dev.testtask.data.PhoneMaskRepositoryImpl
-import com.didjeridu_dev.testtask.data.PostsRepositoryImpl
+import com.didjeridu_dev.testtask.data.network.repository.AuthenticationRepositoryImpl
+import com.didjeridu_dev.testtask.data.network.repository.PhoneMaskRepositoryImpl
+import com.didjeridu_dev.testtask.data.network.repository.PostsRepositoryImpl
 import com.didjeridu_dev.testtask.data.local.SharedPreferencesManager
-import com.didjeridu_dev.testtask.data.network.AuthenticationApiService
-import com.didjeridu_dev.testtask.data.network.PhoneMaskApiService
-import com.didjeridu_dev.testtask.data.network.PostsApiService
+import com.didjeridu_dev.testtask.data.network.api.AuthenticationApiService
+import com.didjeridu_dev.testtask.data.network.api.PhoneMaskApiService
+import com.didjeridu_dev.testtask.data.network.api.PostsApiService
 import com.didjeridu_dev.testtask.domain.repository.AuthenticationRepository
 import com.didjeridu_dev.testtask.domain.repository.PhoneMaskRepository
 import com.didjeridu_dev.testtask.domain.repository.PostsRepository
@@ -48,7 +48,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun providePhoneMaskService(retrofit: Retrofit):PhoneMaskApiService{
+    fun providePhoneMaskService(retrofit: Retrofit): PhoneMaskApiService {
         return retrofit.create(PhoneMaskApiService::class.java)
     }
 
@@ -62,7 +62,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun provideAuthenticationService(retrofit: Retrofit):AuthenticationApiService{
+    fun provideAuthenticationService(retrofit: Retrofit): AuthenticationApiService {
         return retrofit.create(AuthenticationApiService::class.java)
     }
 
@@ -77,7 +77,7 @@ class NetworkModule {
 
     @Provides
     @Singleton
-    fun providePostsApiService(retrofit: Retrofit):PostsApiService{
+    fun providePostsApiService(retrofit: Retrofit): PostsApiService {
         return retrofit.create(PostsApiService::class.java)
     }
 

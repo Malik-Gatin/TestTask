@@ -1,5 +1,6 @@
 package com.didjeridu_dev.testtask.presentation
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -34,6 +35,7 @@ class HomeFragment: Fragment(), ListAdapterListener {
         return binding.root
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -46,9 +48,9 @@ class HomeFragment: Fragment(), ListAdapterListener {
 
         binding.filterMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
-                when(p0?.getItemAtPosition(p2).toString()){
-                    getString(R.string.date_filter) -> homeViewModel.sortByDate()
-                    getString(R.string.default_filter) -> homeViewModel.sortByServer()
+                when(p2){
+                    0 -> {homeViewModel.sortByServer()}
+                    1 -> {homeViewModel.sortByDate()}
                 }
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -59,20 +61,24 @@ class HomeFragment: Fragment(), ListAdapterListener {
                 when(it){
                     PostsApiStatus.DONE -> {
                         binding.bRefresh.isEnabled = true
+                        isHideProgressBar(true)
                     }
                     PostsApiStatus.LOADING -> {
                         binding.bRefresh.isEnabled = false
+                        isHideProgressBar(false)
                     }
                     PostsApiStatus.ERROR -> {
                         binding.bRefresh.isEnabled = true
+                        isHideProgressBar(true)
                     }
                 }
-            }
+            } ?: isHideProgressBar(true)
         }
 
         homeViewModel.posts.observe(viewLifecycleOwner){posts->
             posts?.let{
                 adapter.submitList(posts)
+                isHideProgressBar(true)
             }
         }
     }
@@ -88,5 +94,12 @@ class HomeFragment: Fragment(), ListAdapterListener {
             date = post.date
         ))
         findNavController().navigate(R.id.action_homeFragment_to_articleDetailsFragment, bundle)
+    }
+
+    private fun isHideProgressBar(isHide: Boolean) {
+        if(isHide)
+            binding.progressBar.visibility = View.GONE
+        else
+            binding.progressBar.visibility = View.VISIBLE
     }
 }

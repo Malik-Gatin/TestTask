@@ -1,4 +1,4 @@
-package com.didjeridu_dev.testtask.data.network
+package com.didjeridu_dev.testtask.data.network.api
 
 import com.didjeridu_dev.testtask.data.network.models.Post
 import retrofit2.http.GET

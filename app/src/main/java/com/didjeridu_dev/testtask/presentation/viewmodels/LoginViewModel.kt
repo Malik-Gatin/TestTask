@@ -16,7 +16,7 @@ import okhttp3.FormBody
 import okhttp3.RequestBody
 import javax.inject.Inject
 
-enum class AuthApiStatus {LOADING, ERROR, DONE}
+enum class AuthApiStatus {DEFAULT, LOADING, ERROR, DONE}
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
@@ -27,7 +27,7 @@ class LoginViewModel @Inject constructor(
     private val _status = MutableLiveData<AuthApiStatus>()
     private val _responseAuth = MutableLiveData<Authentication>()
     private val _isEnableButton = MutableLiveData<Boolean>(false)
-    private val _isHidePassword = MutableLiveData<Boolean>(false)
+    private val _isHidePassword = MutableLiveData<Boolean>(true)
     private val _phone = MutableLiveData<String>()
     private val _password = MutableLiveData<String>()
 
@@ -88,6 +88,10 @@ class LoginViewModel @Inject constructor(
                 _status.value = AuthApiStatus.ERROR
             }
         }
+    }
+
+    fun resetStatus(){
+        _status.value = AuthApiStatus.DEFAULT
     }
 
     private fun createFormBody(loginData: Login): RequestBody {

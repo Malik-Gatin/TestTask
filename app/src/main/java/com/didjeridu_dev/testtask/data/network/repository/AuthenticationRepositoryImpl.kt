@@ -1,8 +1,8 @@
-package com.didjeridu_dev.testtask.data
+package com.didjeridu_dev.testtask.data.network.repository
 
 import com.didjeridu_dev.testtask.data.local.SharedPreferencesManager
 import com.didjeridu_dev.testtask.data.network.models.Authentication
-import com.didjeridu_dev.testtask.data.network.AuthenticationApiService
+import com.didjeridu_dev.testtask.data.network.api.AuthenticationApiService
 import com.didjeridu_dev.testtask.data.network.models.Login
 import com.didjeridu_dev.testtask.domain.repository.AuthenticationRepository
 import com.google.gson.Gson
@@ -12,8 +12,8 @@ import retrofit2.Response
 import javax.inject.Inject
 
 class AuthenticationRepositoryImpl @Inject constructor(
-   private val  authenticationApiService: AuthenticationApiService,
-   private val sharedPreferencesManager: SharedPreferencesManager
+    private val  authenticationApiService: AuthenticationApiService,
+    private val sharedPreferencesManager: SharedPreferencesManager
 ): AuthenticationRepository {
     override suspend fun auth(loginData: RequestBody): Response<Authentication> {
         return authenticationApiService.auth(loginData)

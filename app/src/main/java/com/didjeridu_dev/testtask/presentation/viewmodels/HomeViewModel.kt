@@ -64,6 +64,7 @@ class HomeViewModel @Inject constructor(
                         _posts.postValue(it.posts)
                     }else{
                         getPostsFromServer()
+                        _status.value = PostsApiStatus.DONE
                     }
                 } ?: getPostsFromServer()
             }
