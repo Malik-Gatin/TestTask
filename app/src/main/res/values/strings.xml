@@ -10,6 +10,7 @@
     <string name="default_filter">По умолчанию</string>
     <string name="date_filter">По дате</string>
     <string name="date_example">05 декабря, 19:40</string>
+    <string name="error_selected_item">Не удалось получить данные!</string>
     <string name="title_example">Отчёт Лаборатории реактивного движения (JPL)</string>
     <string name="description_example">В отчёте по исследованию космического аппарата «Новые
         Горизонты» (New Horizons), запущенном NASA в январе 2006 года. На борту аппарата находится

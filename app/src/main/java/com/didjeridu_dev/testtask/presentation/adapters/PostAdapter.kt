@@ -11,13 +11,16 @@ import com.didjeridu_dev.testtask.App.AppConstants.BASE_URL
 import com.didjeridu_dev.testtask.R
 import com.didjeridu_dev.testtask.data.network.models.Post
 import com.didjeridu_dev.testtask.databinding.ArticleItemBinding
+import com.didjeridu_dev.testtask.presentation.interfaces.ListAdapterListener
 
-class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiff()) {
+class PostAdapter(
+    private val listAdapterListener: ListAdapterListener
+) : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiff()) {
 
     class PostViewHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = ArticleItemBinding.bind(view)
 
-        fun bind(post:Post) = with(binding){
+        fun bind(post:Post, listAdapterListener: ListAdapterListener) = with(binding){
             tvTitle.text = post.title
             tvDescription.text = post.text
             tvDate.text = post.date
@@ -25,6 +28,9 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiff()) {
             imageArticle.load(imageUrl){
                 placeholder(R.drawable.loading_img)
                 error(R.drawable.ic_broken_image)
+            }
+            itemView.setOnClickListener{
+                listAdapterListener.onItemClickListener(post)
             }
         }
     }
@@ -46,6 +52,6 @@ class PostAdapter : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiff()) {
     }
 
     override fun onBindViewHolder(holder: PostViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), listAdapterListener)
     }
 }

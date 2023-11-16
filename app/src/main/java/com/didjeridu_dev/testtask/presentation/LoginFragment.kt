@@ -6,7 +6,6 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,7 +27,6 @@ class LoginFragment:Fragment() {
 
     private val loginViewModel: LoginViewModel by viewModels()
     private lateinit var binding: FragmentLoginBinding
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -43,7 +41,7 @@ class LoginFragment:Fragment() {
         val editTextPhone = binding.etPhone
         val editTextPasswd = binding.etPassword
 
-        var phoneMask = savedInstanceState?.getString("mask") ?: ""
+        var phoneMask = loginViewModel.phoneMask.value?.phoneMask ?: ""
         var firstXIndex = phoneMask.indexOf('Х') - 1
 
         editTextPhone.addTextChangedListener(object: TextWatcher {
@@ -152,12 +150,6 @@ class LoginFragment:Fragment() {
                 loginViewModel.password.value ?: ""
             )
         )
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-        outState.putString("mask", loginViewModel.phoneMask.value?.phoneMask)
-        Log.d("LoginFragment", "onSaveInstanceState: Phone: ${binding.etPhone.text}, Password: ${binding.etPassword.text}")
     }
 
     private fun enableButtonSwitcher(isEnable: Boolean){

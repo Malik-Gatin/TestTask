@@ -7,15 +7,20 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.didjeridu_dev.testtask.App.AppConstants.SELECTED_ITEM
 import com.didjeridu_dev.testtask.R
+import com.didjeridu_dev.testtask.data.network.models.Post
 import com.didjeridu_dev.testtask.databinding.FragmentHomeBinding
+import com.didjeridu_dev.testtask.domain.models.PostDomain
 import com.didjeridu_dev.testtask.presentation.adapters.PostAdapter
+import com.didjeridu_dev.testtask.presentation.interfaces.ListAdapterListener
 import com.didjeridu_dev.testtask.presentation.viewmodels.HomeViewModel
 import com.didjeridu_dev.testtask.presentation.viewmodels.PostsApiStatus
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class HomeFragment: Fragment() {
+class HomeFragment: Fragment(), ListAdapterListener {
 
     private val homeViewModel: HomeViewModel by viewModels()
     private lateinit var binding: FragmentHomeBinding
@@ -32,7 +37,7 @@ class HomeFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val adapter = PostAdapter()
+        val adapter = PostAdapter(this)
         binding.recyclerViewArticles.adapter = adapter
 
         binding.bRefresh.setOnClickListener{
@@ -70,5 +75,18 @@ class HomeFragment: Fragment() {
                 adapter.submitList(posts)
             }
         }
+    }
+
+    override fun onItemClickListener(post: Post) {
+        val bundle = Bundle()
+        bundle.putParcelable(SELECTED_ITEM, PostDomain(
+            id = post.id,
+            title = post.title,
+            text = post.text,
+            image = post.image,
+            sort = post.sort,
+            date = post.date
+        ))
+        findNavController().navigate(R.id.action_homeFragment_to_articleDetailsFragment, bundle)
     }
 }
