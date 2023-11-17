@@ -40,12 +40,12 @@ class HomeViewModel @Inject constructor(
         get() = _currentSortType
 
     init {
-        updateDataFromServerEveryHour()
+        updateDataFromServerEveryTimeN()
     }
     /**
      Периодическое обновление данных с сервера
      */
-    private fun updateDataFromServerEveryHour(){
+    private fun updateDataFromServerEveryTimeN(){
         _executor.scheduleAtFixedRate({getPosts()}, 0, UPDATE_FREQUENCY, TimeUnit.MILLISECONDS)
     }
 
@@ -64,7 +64,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             postsRepository.getPostsFromLocalFile()?.let {
                 val difference = currentDate - it.date
-                if (difference < UPDATE_FREQUENCY) {
+                if (difference < UPDATE_FREQUENCY - 5000L) {
                     _posts.postValue(it.posts)
                 } else {
                     getPostsFromServer()

@@ -14,6 +14,6 @@ class App:Application(){
         const val SELECTED_ITEM = "selectedItem"
 
         // частота обновления данных с сервера: каждые n мс
-        const val UPDATE_FREQUENCY = 3600000L
+        const val UPDATE_FREQUENCY = 1_200_000L
     }
 }
