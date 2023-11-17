@@ -1,6 +1,5 @@
 package com.didjeridu_dev.testtask.presentation
 
-import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -18,6 +17,7 @@ import com.didjeridu_dev.testtask.presentation.adapters.PostAdapter
 import com.didjeridu_dev.testtask.presentation.interfaces.ListAdapterListener
 import com.didjeridu_dev.testtask.presentation.viewmodels.HomeViewModel
 import com.didjeridu_dev.testtask.presentation.viewmodels.PostsApiStatus
+import com.didjeridu_dev.testtask.presentation.viewmodels.SortType
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -35,7 +35,6 @@ class HomeFragment: Fragment(), ListAdapterListener {
         return binding.root
     }
 
-    @SuppressLint("ObsoleteSdkInt")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -49,8 +48,8 @@ class HomeFragment: Fragment(), ListAdapterListener {
         binding.filterMenu.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
                 when(p2){
-                    0 -> {homeViewModel.sortByServer()}
-                    1 -> {homeViewModel.sortByDate()}
+                    0 -> {homeViewModel.setCurrentSortType(SortType.BY_SERVER) }
+                    1 -> {homeViewModel.setCurrentSortType(SortType.BY_DATE) }
                 }
             }
             override fun onNothingSelected(p0: AdapterView<*>?) {}
@@ -78,7 +77,18 @@ class HomeFragment: Fragment(), ListAdapterListener {
         homeViewModel.posts.observe(viewLifecycleOwner){posts->
             posts?.let{
                 adapter.submitList(posts)
+                with(binding) {
+                    recyclerViewArticles.post{
+                        recyclerViewArticles.scrollToPosition(0)
+                    }
+                }
                 isHideProgressBar(true)
+            }
+        }
+
+        homeViewModel.currentSortType.observe(viewLifecycleOwner){
+            it?.let {
+                homeViewModel.applySort()
             }
         }
     }

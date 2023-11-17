@@ -10,9 +10,7 @@ import com.didjeridu_dev.testtask.domain.models.LocalPostData
 import com.didjeridu_dev.testtask.domain.repository.PostsRepository
 import com.didjeridu_dev.testtask.utils.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Locale
 import java.util.concurrent.Executors
@@ -20,6 +18,10 @@ import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 enum class PostsApiStatus {LOADING, ERROR, DONE}
+enum class SortType {
+    BY_SERVER,
+    BY_DATE
+}
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -28,15 +30,18 @@ class HomeViewModel @Inject constructor(
     private val _posts = MutableLiveData<List<Post>>()
     private val _status = MutableLiveData<PostsApiStatus>()
     private val _executor = Executors.newSingleThreadScheduledExecutor()
-    val posts:LiveData<List<Post>>
+    private var _currentSortType = MutableLiveData<SortType>()
+
+   val posts:LiveData<List<Post>>
         get() = _posts
     val status:LiveData<PostsApiStatus>
         get() = _status
+    val currentSortType:LiveData<SortType>
+        get() = _currentSortType
 
     init {
         updateDataFromServerEveryHour()
     }
-
     /**
      Периодическое обновление данных с сервера
      */
@@ -57,17 +62,14 @@ class HomeViewModel @Inject constructor(
     private fun getPosts(){
         val currentDate = getCurrentDate()
         viewModelScope.launch {
-            withContext(Dispatchers.IO){
-                postsRepository.getPostsFromLocalFile()?.let {
-                    val difference = currentDate - it.date
-                    if(difference < UPDATE_FREQUENCY) {
-                        _posts.postValue(it.posts)
-                    }else{
-                        getPostsFromServer()
-                        _status.value = PostsApiStatus.DONE
-                    }
-                } ?: getPostsFromServer()
-            }
+            postsRepository.getPostsFromLocalFile()?.let {
+                val difference = currentDate - it.date
+                if (difference < UPDATE_FREQUENCY) {
+                    _posts.postValue(it.posts)
+                } else {
+                    getPostsFromServer()
+                }
+            } ?: getPostsFromServer()
         }
     }
 
@@ -92,28 +94,44 @@ class HomeViewModel @Inject constructor(
         }
     }
 
+    fun setCurrentSortType(type: SortType){
+        if(type != _currentSortType.value)
+            _currentSortType.value = type
+    }
+
+    fun applySort() {
+        when(_currentSortType.value) {
+            SortType.BY_DATE -> sortByDate()
+            SortType.BY_SERVER -> sortByServer()
+            else -> {}
+        }
+    }
+
     /**
      Сортировка по дате
      */
-    fun sortByDate(){
+    private fun sortByDate(){
         val sdf = SimpleDateFormat("dd MMMM, HH:mm", Locale.getDefault())
         val sortedPosts = _posts.value?.sortedByDescending {post ->
             sdf.parse(post.date)
         }
         sortedPosts?.let {
-            _posts.value = it
+            if(it!=_posts.value)
+                _posts.value = it
         }
     }
 
     /**
     Сортировка по умолчанию (по данным с сервера)
      */
-    fun sortByServer(){
+    private fun sortByServer(){
         val sortedPosts = _posts.value?.sortedBy {post ->
             post.sort
         }
+
         sortedPosts?.let {
-            _posts.value = it
+            if(it!=_posts.value)
+                _posts.value = it
         }
     }
 }
