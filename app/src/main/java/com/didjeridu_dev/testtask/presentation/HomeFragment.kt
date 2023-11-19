@@ -10,7 +10,6 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.didjeridu_dev.testtask.App.AppConstants.SELECTED_ITEM
 import com.didjeridu_dev.testtask.R
-import com.didjeridu_dev.testtask.data.network.models.Post
 import com.didjeridu_dev.testtask.databinding.FragmentHomeBinding
 import com.didjeridu_dev.testtask.domain.models.PostDomain
 import com.didjeridu_dev.testtask.presentation.adapters.PostAdapter
@@ -93,16 +92,9 @@ class HomeFragment: Fragment(), ListAdapterListener {
         }
     }
 
-    override fun onItemClickListener(post: Post) {
+    override fun onItemClickListener(post: PostDomain) {
         val bundle = Bundle()
-        bundle.putParcelable(SELECTED_ITEM, PostDomain(
-            id = post.id,
-            title = post.title,
-            text = post.text,
-            image = post.image,
-            sort = post.sort,
-            date = post.date
-        ))
+        bundle.putParcelable(SELECTED_ITEM, post)
         findNavController().navigate(R.id.action_homeFragment_to_articleDetailsFragment, bundle)
     }
 

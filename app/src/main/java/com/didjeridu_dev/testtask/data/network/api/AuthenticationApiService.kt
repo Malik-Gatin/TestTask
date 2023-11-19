@@ -8,7 +8,6 @@ import retrofit2.http.Headers
 import retrofit2.http.POST
 
 interface AuthenticationApiService {
-
     @Headers("Content-Type: application/x-www-form-urlencoded")
     @POST("auth")
     suspend fun auth(@Body loginData: RequestBody): Response<Authentication>

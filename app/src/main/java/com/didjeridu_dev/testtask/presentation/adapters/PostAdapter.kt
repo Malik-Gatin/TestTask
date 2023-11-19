@@ -9,18 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import coil.load
 import com.didjeridu_dev.testtask.App.AppConstants.BASE_URL
 import com.didjeridu_dev.testtask.R
-import com.didjeridu_dev.testtask.data.network.models.Post
 import com.didjeridu_dev.testtask.databinding.ArticleItemBinding
+import com.didjeridu_dev.testtask.domain.models.PostDomain
 import com.didjeridu_dev.testtask.presentation.interfaces.ListAdapterListener
 
 class PostAdapter(
     private val listAdapterListener: ListAdapterListener
-) : ListAdapter<Post, PostAdapter.PostViewHolder>(PostDiff()) {
+) : ListAdapter<PostDomain, PostAdapter.PostViewHolder>(PostDiff()) {
 
     class PostViewHolder(view: View): RecyclerView.ViewHolder(view) {
         private val binding = ArticleItemBinding.bind(view)
 
-        fun bind(post:Post, listAdapterListener: ListAdapterListener) = with(binding){
+        fun bind(post:PostDomain, listAdapterListener: ListAdapterListener) = with(binding){
             tvTitle.text = post.title
             tvDescription.text = post.text
             tvDate.text = post.date
@@ -35,12 +35,12 @@ class PostAdapter(
         }
     }
 
-    class PostDiff: DiffUtil.ItemCallback<Post>(){
-        override fun areItemsTheSame(oldItem: Post, newItem: Post): Boolean {
+    class PostDiff: DiffUtil.ItemCallback<PostDomain>(){
+        override fun areItemsTheSame(oldItem: PostDomain, newItem: PostDomain): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Post, newItem: Post): Boolean {
+        override fun areContentsTheSame(oldItem: PostDomain, newItem: PostDomain): Boolean {
             return oldItem == newItem
         }
     }

@@ -3,8 +3,8 @@ package com.didjeridu_dev.testtask.data.network.repository
 import com.didjeridu_dev.testtask.App.AppConstants.POSTS
 import com.didjeridu_dev.testtask.data.local.SharedPreferencesManager
 import com.didjeridu_dev.testtask.data.network.api.PostsApiService
-import com.didjeridu_dev.testtask.data.network.models.Post
 import com.didjeridu_dev.testtask.domain.models.LocalPostData
+import com.didjeridu_dev.testtask.domain.models.PostDomain
 import com.didjeridu_dev.testtask.domain.repository.PostsRepository
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -14,8 +14,11 @@ class PostsRepositoryImpl @Inject constructor(
     private val postsApiService: PostsApiService,
     private val sharedPreferencesManager: SharedPreferencesManager
 ):PostsRepository {
-    override suspend fun getPosts(): List<Post> {
-        return postsApiService.getPosts()
+    override suspend fun getPosts(): List<PostDomain> {
+        val posts = postsApiService.getPosts()
+        return posts.map{post->
+            post.castToDomain()
+        }
     }
     override suspend fun getPostsFromLocalFile(): LocalPostData? {
         val jsonPosts = sharedPreferencesManager.getData(POSTS)

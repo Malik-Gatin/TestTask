@@ -5,8 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.didjeridu_dev.testtask.App.AppConstants.UPDATE_FREQUENCY
-import com.didjeridu_dev.testtask.data.network.models.Post
 import com.didjeridu_dev.testtask.domain.models.LocalPostData
+import com.didjeridu_dev.testtask.domain.models.PostDomain
 import com.didjeridu_dev.testtask.domain.repository.PostsRepository
 import com.didjeridu_dev.testtask.utils.DateUtils
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -27,12 +27,12 @@ enum class SortType {
 class HomeViewModel @Inject constructor(
     private val postsRepository: PostsRepository
 ):ViewModel() {
-    private val _posts = MutableLiveData<List<Post>>()
+    private val _posts = MutableLiveData<List<PostDomain>>()
     private val _status = MutableLiveData<PostsApiStatus>()
     private val _executor = Executors.newSingleThreadScheduledExecutor()
     private var _currentSortType = MutableLiveData<SortType>()
 
-   val posts:LiveData<List<Post>>
+   val posts:LiveData<List<PostDomain>>
         get() = _posts
     val status:LiveData<PostsApiStatus>
         get() = _status

@@ -1,7 +1,7 @@
 package com.didjeridu_dev.testtask.domain.repository
 
-import com.didjeridu_dev.testtask.data.network.models.PhoneMask
+import com.didjeridu_dev.testtask.domain.models.PhoneMaskDomain
 
 interface PhoneMaskRepository {
-    suspend fun getPhoneMask(): PhoneMask
+    suspend fun getPhoneMask(): PhoneMaskDomain
 }

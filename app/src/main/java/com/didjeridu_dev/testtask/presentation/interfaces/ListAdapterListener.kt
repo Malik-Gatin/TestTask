@@ -1,7 +1,7 @@
 package com.didjeridu_dev.testtask.presentation.interfaces
 
-import com.didjeridu_dev.testtask.data.network.models.Post
+import com.didjeridu_dev.testtask.domain.models.PostDomain
 
 interface ListAdapterListener {
-    fun onItemClickListener(post: Post)
+    fun onItemClickListener(post: PostDomain)
 }

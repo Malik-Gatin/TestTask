@@ -14,7 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.didjeridu_dev.testtask.R
-import com.didjeridu_dev.testtask.data.network.models.Login
+import com.didjeridu_dev.testtask.domain.models.Login
 import com.didjeridu_dev.testtask.databinding.FragmentLoginBinding
 import com.didjeridu_dev.testtask.utils.MaskUtils.Companion.applyMask
 import com.didjeridu_dev.testtask.utils.MaskUtils.Companion.fromMaskToRequest
@@ -84,7 +84,7 @@ class LoginFragment:Fragment() {
             override fun afterTextChanged(p0: Editable?) {}
         })
 
-        binding.apply {
+        with(binding) {
             bClearPhone.setOnClickListener{
                 etPhone.text?.clear()
             }
@@ -157,6 +157,9 @@ class LoginFragment:Fragment() {
         }
     }
 
+    /**
+     * Аутентификация
+     * */
     private fun auth() {
         loginViewModel.auth(
             Login(
@@ -166,6 +169,9 @@ class LoginFragment:Fragment() {
         )
     }
 
+    /**
+     * Обработка ui кнопки "Войти"
+     * */
     private fun enableButtonSwitcher(isEnable: Boolean){
         binding.bLogin.apply {
             isEnabled = isEnable
@@ -187,6 +193,10 @@ class LoginFragment:Fragment() {
             }
         }
     }
+
+    /**
+     * Показываем/скрываем состояние ошибки
+     * */
     private fun switchShowErrorAuth(isError: Boolean){
         binding.tvErrorPassword.apply {
             visibility = if(isError){
