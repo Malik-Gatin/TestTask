@@ -175,22 +175,6 @@ class LoginFragment:Fragment() {
     private fun enableButtonSwitcher(isEnable: Boolean){
         binding.bLogin.apply {
             isEnabled = isEnable
-            this@LoginFragment.context?.let { context ->
-                val backgroundButton = ContextCompat.getDrawable(
-                    context,
-                    R.drawable.rounded_corner
-                ) as GradientDrawable
-                backgroundButton.setColor(
-                    ContextCompat.getColor(
-                        context,
-                        if(isEnable)
-                            R.color.blue
-                        else
-                            R.color.blue_disabled
-                    )
-                )
-                background = backgroundButton
-            }
         }
     }
 
@@ -211,7 +195,6 @@ class LoginFragment:Fragment() {
                     context,
                     R.drawable.rounded_corner_transparent
                 ) as GradientDrawable
-
                 border.cornerRadius = resources.getDimension(R.dimen.radius_14)
                 border.setStroke(
                     resources.getDimension(R.dimen.border_width).toInt(),

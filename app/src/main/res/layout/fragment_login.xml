@@ -162,6 +162,7 @@
         android:layout_height="wrap_content"
 
         android:background="@drawable/rounded_corner"
+        android:backgroundTint="@color/colors_enabled_b_login"
         android:text="@string/login"
         android:textAllCaps="false"
         style="@style/button"
